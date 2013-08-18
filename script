@@ -1,0 +1,30 @@
+openssl s_client -connect http://dns1.example.com:443 | openssl x509 -pubkey -noout >> public_key
+echo "downloading certificate . . ."
+sleep 3
+echo "Storing public key in public_key file  . . ."
+file="/root/cert"
+if [ -f /root/cert ]
+then
+for pub_key in `cat $file`
+do
+echo $pub_key
+done
+fi
+echo "Enter your email address"
+read email_user
+echo $email_user > email_users
+sleep 2
+echo "Enter the pin you received in your mail"
+read pin
+test="$pin"
+test="$test$email_user"
+echo -n "$test" | sha1sum > hashed_users
+echo "storing hash in the hashed_users file . . ."
+sleep 3
+
+curl --data "email=$email_user" http://dns1.example.com
+
+
+
+
+
